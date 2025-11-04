@@ -1,25 +1,17 @@
 using Godot;
 using System;
 
-[GlobalClass]
-public abstract partial class Timekeeper : Node
+public abstract partial class Timekeeper<T> : Node
 {
-	// Should split input handling out later
-	private InputEvent _lastInput;
+	public T Target { get; protected set; }
 
-	// Allow this to handle more than just InputEvents later
-	protected abstract void CompareNotes(InputEvent @event);
+	protected abstract void UpdateTarget();
+
+	protected abstract void CompareTarget();
 
 	private void OnTimerTimeout()
 	{
-		CompareNotes(_lastInput);
-	}
-
-	public override void _Input(InputEvent @event)
-	{
-		if(@event.IsActionPressed("W") || @event.IsActionPressed("A") || @event.IsActionPressed("S") || @event.IsActionPressed("D"))
-		{
-			_lastInput = @event;
-		}
+		UpdateTarget();
+		CompareTarget();
 	}
 }
