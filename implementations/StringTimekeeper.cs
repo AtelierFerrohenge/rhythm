@@ -5,15 +5,15 @@ using System;
 public partial class StringTimekeeper : Timekeeper<string>
 {
 	// Input handling and hardcoded inputs are for testing purposes only, final implementation should be more flexible
-	private InputEvent _lastInput;
+	private bool _targetPressed = false;
 
 	private Godot.Collections.Array<string> _targets = ["W", "A", "S", "D"];
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event.IsActionPressed("W") || @event.IsActionPressed("A") || @event.IsActionPressed("S") || @event.IsActionPressed("D"))
+		if (@event.IsActionPressed(Target))
 		{
-			_lastInput = @event;
+			_targetPressed = true;
 		}
 	}
 
@@ -25,7 +25,7 @@ public partial class StringTimekeeper : Timekeeper<string>
 
 	protected override void CompareTarget()
 	{
-		if (_lastInput?.IsActionPressed(Target) ?? false)
+		if (_targetPressed)
 		{
 			GD.Print(Target + " was pressed.");
 		}
@@ -33,5 +33,6 @@ public partial class StringTimekeeper : Timekeeper<string>
 		{
 			GD.Print(Target + " was not pressed.");
 		}
+		_targetPressed = false;
 	}
 }
