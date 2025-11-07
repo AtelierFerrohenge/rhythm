@@ -9,6 +9,13 @@ public partial class StringTimekeeper : Timekeeper<string>
 
 	private Godot.Collections.Array<string> _targets = ["W", "A", "S", "D"];
 
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		// Workaround to _Input with "" Target
+		Target = "W";
+	}
+
 	public override void _Input(InputEvent @event)
 	{
 		if (@event.IsActionPressed(Target))
@@ -20,6 +27,10 @@ public partial class StringTimekeeper : Timekeeper<string>
 	protected override void UpdateTarget()
 	{
 		Target = _targets.PickRandom();
+	}
+	
+	protected override void AnnounceTarget()
+	{
 		GD.Print("Press " + Target + "!");
 	}
 
